@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>React Native Assessment - Fitness App Demo | bolder.fit</title>
+    <title>Bolder.fit - Workout Logger Demo</title>
     <style>
         * {
             margin: 0;
@@ -12,836 +12,680 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
         }
 
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
+        .phone-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .company-info {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .intro-section {
-            text-align: center;
-            margin-bottom: 3rem;
-            color: white;
-        }
-
-        .intro-section h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .intro-section p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .demo-container {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .phone-mockup {
-            flex: 0 0 350px;
+        .phone {
+            width: 375px;
+            height: 812px;
             background: #000;
-            border-radius: 25px;
+            border-radius: 40px;
             padding: 8px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 120px;
-            height: fit-content;
-        }
-
-        .phone-screen {
-            background: #fff;
-            border-radius: 18px;
-            height: 700px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .status-bar {
-            background: #000;
-            color: #fff;
-            padding: 8px 20px;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            border-radius: 18px 18px 0 0;
-        }
-
-        .app-content {
-            height: calc(100% - 100px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             position: relative;
         }
 
         .screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 60px;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.3s ease;
-            padding: 20px;
-        }
-
-        .screen.active {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .bottom-nav {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: #f8f9fa;
-            display: flex;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .nav-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #6c757d;
-        }
-
-        .nav-item.active {
-            color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
-        }
-
-        .nav-item:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-icon {
-            font-size: 20px;
-            margin-bottom: 2px;
-        }
-
-        .nav-label {
-            font-size: 10px;
-            font-weight: 500;
-        }
-
-        .controls-panel {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .section {
-            margin-bottom: 2rem;
-        }
-
-        .section h3 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            border-color: #667eea;
-        }
-
-        .feature-card.active {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .feature-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .feature-desc {
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.4;
-        }
-
-        .code-example {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 1.5rem;
-            border-radius: 8px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.85rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-
-        .dashboard-content {
-            text-align: center;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-
-        .profile-form {
-            padding: 20px 0;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .form-input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+            height: 100%;
+            background: #fff;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s ease;
-        }
-
-        .btn:hover {
-            background: #5a6fd8;
-        }
-
-        .workout-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .workout-item {
-            background: #f8f9fa;
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-
-        .workout-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .workout-meta {
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        .settings-list {
-            padding: 20px 0;
-        }
-
-        .setting-item {
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
         }
 
-        .toggle {
-            width: 50px;
-            height: 24px;
-            background: #ccc;
+        .offline-indicator {
+            background: #ff6b6b;
+            padding: 4px 12px;
             border-radius: 12px;
-            position: relative;
-            cursor: pointer;
-            transition: background 0.2s ease;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .toggle.active {
-            background: #667eea;
+        .offline-indicator.show {
+            opacity: 1;
         }
 
-        .toggle::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: transform 0.2s ease;
-        }
-
-        .toggle.active::after {
-            transform: translateX(26px);
-        }
-
-        .tech-stack {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-top: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .tech-item {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        .header {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
             text-align: center;
         }
 
-        .sync-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 12px;
-            height: 12px;
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            height: calc(100% - 144px);
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: white;
+            color: #4facfe;
+            border-bottom: 3px solid #4facfe;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .workout-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #4facfe;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .workout-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .workout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .workout-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .workout-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-synced {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .workout-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .action-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .exercise-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #f1f3f4;
+            transition: background 0.2s;
+        }
+
+        .exercise-item:hover {
+            background: #f8f9fa;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .exercise-details {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .sync-status {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .sync-status.show {
+            opacity: 1;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
             border-radius: 50%;
-            background: #28a745;
-            animation: pulse 2s infinite;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
         }
 
-        .sync-indicator.syncing {
-            background: #ffc107;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .sync-indicator.offline {
-            background: #dc3545;
+        .network-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        .network-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
-        @media (max-width: 768px) {
-            .demo-container {
-                flex-direction: column;
-            }
-            
-            .phone-mockup {
-                flex: none;
-                max-width: 100%;
-                position: relative;
-                top: auto;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #ccc;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #4facfe;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .company-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .company-info a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .company-info a:hover {
+            text-decoration: underline;
+        }
+
+        .demo-note {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #1565c0;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="header-content">
-            <div class="logo">🏋️ FitnessApp Assessment</div>
-            <div class="company-info">
-                <strong>bolder.fit</strong> | React Native Mid/Senior Developer Assessment
+    <div class="network-controls">
+        <h3 style="margin-bottom: 16px; color: #333;">Demo Controls</h3>
+        <div class="network-toggle">
+            <span>Network:</span>
+            <div class="toggle-switch active" id="networkToggle">
+                <div class="toggle-slider"></div>
+            </div>
+            <span id="networkStatus">Online</span>
+        </div>
+        <button onclick="syncData()" style="padding: 8px 16px; background: #4facfe; color: white; border: none; border-radius: 6px; cursor: pointer;">Force Sync</button>
+    </div>
+
+    <div class="phone-container">
+        <div class="phone">
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41 AM</span>
+                    <div class="offline-indicator" id="offlineIndicator">Offline Mode</div>
+                    <span>100%</span>
+                </div>
+                
+                <div class="header">
+                    <h1>Workout Logger</h1>
+                    <div class="subtitle">Redux Offline Demo</div>
+                </div>
+
+                <div class="company-info">
+                    <p>Powered by <a href="https://bolder.fit/en" target="_blank">Bolder.fit</a> - Your Fitness Journey Partner</p>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('workouts')">Workouts</button>
+                    <button class="tab" onclick="switchTab('session')">Session</button>
+                    <button class="tab" onclick="switchTab('history')">History</button>
+                </div>
+
+                <div class="content">
+                    <div class="tab-content active" id="workouts">
+                        <div class="demo-note">
+                            <strong>Demo:</strong> Toggle network to see offline functionality. All actions work offline and sync when online.
+                        </div>
+                        
+                        <div class="workout-card">
+                            <div class="workout-header">
+                                <div class="workout-title">Push Day</div>
+                                <div class="workout-status status-synced">Synced</div>
+                            </div>
+                            <div class="workout-stats">
+                                <div class="stat">
+                                    <div class="stat-value">45</div>
+                                    <div class="stat-label">Minutes</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">8</div>
+                                    <div class="stat-label">Exercises</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.1k</div>
+                                    <div class="stat-label">Calories</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="workout-card">
+                            <div class="workout-header">
+                                <div class="workout-title">Pull Day</div>
+                                <div class="workout-status status-pending">Pending Sync</div>
+                            </div>
+                            <div class="workout-stats">
+                                <div class="stat">
+                                    <div class="stat-value">52</div>
+                                    <div class="stat-label">Minutes</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">6</div>
+                                    <div class="stat-label">Exercises</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">1.8k</div>
+                                    <div class="stat-label">Calories</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="action-button" onclick="startWorkout()">Start New Workout</button>
+                    </div>
+
+                    <div class="tab-content" id="session">
+                        <div class="workout-card">
+                            <div class="workout-header">
+                                <div class="workout-title">Current Session</div>
+                                <div class="workout-status status-offline" id="sessionStatus">Live Tracking</div>
+                            </div>
+                            <div class="workout-stats">
+                                <div class="stat">
+                                    <div class="stat-value" id="sessionTime">00:00</div>
+                                    <div class="stat-label">Duration</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="exerciseCount">0</div>
+                                    <div class="stat-label">Exercises</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="setCount">0</div>
+                                    <div class="stat-label">Sets</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-list">
+                            <div class="exercise-item">
+                                <div>
+                                    <div class="exercise-name">Bench Press</div>
+                                    <div class="exercise-details">3 sets × 10 reps @ 185 lbs</div>
+                                </div>
+                                <button onclick="addSet()" style="padding: 6px 12px; background: #4facfe; color: white; border: none; border-radius: 6px;">Add Set</button>
+                            </div>
+                            <div class="exercise-item">
+                                <div>
+                                    <div class="exercise-name">Incline Dumbbell Press</div>
+                                    <div class="exercise-details">3 sets × 12 reps @ 60 lbs</div>
+                                </div>
+                                <button onclick="addSet()" style="padding: 6px 12px; background: #4facfe; color: white; border: none; border-radius: 6px;">Add Set</button>
+                            </div>
+                        </div>
+
+                        <button class="action-button" onclick="finishWorkout()">Finish Workout</button>
+                    </div>
+
+                    <div class="tab-content" id="history">
+                        <div class="demo-note">
+                            <strong>Performance:</strong> This list efficiently handles 1000+ workout records with FlatList optimization.
+                        </div>
+                        
+                        <div id="historyList">
+                            <!-- History items will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="intro-section">
-            <h1>Interactive React Native Assessment Demo</h1>
-            <p>Explore the fitness app structure and features that candidates should implement. This demonstration showcases the expected user experience, technical architecture, and advanced React Native patterns.</p>
-        </div>
-
-        <div class="demo-container">
-            <div class="phone-mockup">
-                <div class="phone-screen">
-                    <div class="status-bar">
-                        <span>9:41</span>
-                        <span>🔋 100%</span>
-                    </div>
-                    <div class="sync-indicator" id="syncIndicator"></div>
-                    
-                    <div class="app-content">
-                        <!-- Dashboard Screen -->
-                        <div class="screen active" id="dashboard">
-                            <div class="dashboard-content">
-                                <h2>Welcome Back!</h2>
-                                <p style="color: #666; margin: 10px 0;">Ready for your workout?</p>
-                                
-                                <div class="stats-grid">
-                                    <div class="stat-card">
-                                        <div class="stat-number">12</div>
-                                        <div class="stat-label">Workouts This Month</div>
-                                    </div>
-                                    <div class="stat-card">
-                                        <div class="stat-number">2.5h</div>
-                                        <div class="stat-label">Average Duration</div>
-                                    </div>
-                                    <div class="stat-card">
-                                        <div class="stat-number">85%</div>
-                                        <div class="stat-label">Goal Achievement</div>
-                                    </div>
-                                    <div class="stat-card">
-                                        <div class="stat-number">1,240</div>
-                                        <div class="stat-label">Calories Burned</div>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn" style="width: 100%; margin-top: 20px;">Start New Workout</button>
-                            </div>
-                        </div>
-
-                        <!-- Profile Screen -->
-                        <div class="screen" id="profile">
-                            <h2>Profile Settings</h2>
-                            <div class="profile-form">
-                                <div class="form-group">
-                                    <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-input" value="Alex Johnson" />
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Age</label>
-                                    <input type="number" class="form-input" value="28" />
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Weight (kg)</label>
-                                    <input type="number" class="form-input" value="75" />
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Fitness Goal</label>
-                                    <select class="form-input">
-                                        <option>Weight Loss</option>
-                                        <option>Muscle Gain</option>
-                                        <option>Endurance</option>
-                                        <option>General Fitness</option>
-                                    </select>
-                                </div>
-                                <button class="btn">Save Changes</button>
-                            </div>
-                        </div>
-
-                        <!-- History Screen -->
-                        <div class="screen" id="history">
-                            <h2>Workout History</h2>
-                            <div class="workout-list">
-                                <div class="workout-item">
-                                    <div class="workout-title">Upper Body Strength</div>
-                                    <div class="workout-meta">45 mins • 320 calories • 2 hours ago</div>
-                                </div>
-                                <div class="workout-item">
-                                    <div class="workout-title">Cardio HIIT</div>
-                                    <div class="workout-meta">30 mins • 280 calories • Yesterday</div>
-                                </div>
-                                <div class="workout-item">
-                                    <div class="workout-title">Lower Body Focus</div>
-                                    <div class="workout-meta">50 mins • 380 calories • 2 days ago</div>
-                                </div>
-                                <div class="workout-item">
-                                    <div class="workout-title">Full Body Circuit</div>
-                                    <div class="workout-meta">35 mins • 290 calories • 3 days ago</div>
-                                </div>
-                                <div class="workout-item">
-                                    <div class="workout-title">Yoga Flow</div>
-                                    <div class="workout-meta">60 mins • 180 calories • 4 days ago</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Settings Screen -->
-                        <div class="screen" id="settings">
-                            <h2>Settings</h2>
-                            <div class="settings-list">
-                                <div class="setting-item">
-                                    <span>Push Notifications</span>
-                                    <div class="toggle active" onclick="toggleSetting(this)"></div>
-                                </div>
-                                <div class="setting-item">
-                                    <span>Biometric Login</span>
-                                    <div class="toggle active" onclick="toggleSetting(this)"></div>
-                                </div>
-                                <div class="setting-item">
-                                    <span>Offline Mode</span>
-                                    <div class="toggle active" onclick="toggleSetting(this)"></div>
-                                </div>
-                                <div class="setting-item">
-                                    <span>Data Sync</span>
-                                    <div class="toggle" onclick="toggleSetting(this)"></div>
-                                </div>
-                                <div class="setting-item">
-                                    <span>Dark Mode</span>
-                                    <div class="toggle" onclick="toggleSetting(this)"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bottom-nav">
-                        <div class="nav-item active" onclick="switchTab('dashboard', this)">
-                            <div class="nav-icon">📊</div>
-                            <div class="nav-label">Dashboard</div>
-                        </div>
-                        <div class="nav-item" onclick="switchTab('profile', this)">
-                            <div class="nav-icon">👤</div>
-                            <div class="nav-label">Profile</div>
-                        </div>
-                        <div class="nav-item" onclick="switchTab('history', this)">
-                            <div class="nav-icon">📋</div>
-                            <div class="nav-label">History</div>
-                        </div>
-                        <div class="nav-item" onclick="switchTab('settings', this)">
-                            <div class="nav-icon">⚙️</div>
-                            <div class="nav-label">Settings</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="controls-panel">
-                <div class="section">
-                    <h3>🎯 Key Features to Implement</h3>
-                    <div class="feature-grid">
-                        <div class="feature-card active" onclick="highlightFeature(this, 'navigation')">
-                            <div class="feature-title">Navigation Architecture</div>
-                            <div class="feature-desc">React Navigation v6 with TypeScript, deep linking, and custom URL schemes</div>
-                        </div>
-                        <div class="feature-card" onclick="highlightFeature(this, 'state')">
-                            <div class="feature-title">State Management</div>
-                            <div class="feature-desc">Redux Toolkit with RTK Query, optimistic updates, and offline sync</div>
-                        </div>
-                        <div class="feature-card" onclick="highlightFeature(this, 'performance')">
-                            <div class="feature-title">Performance Optimization</div>
-                            <div class="feature-desc">FlatList virtualization, memo patterns, and 60fps animations</div>
-                        </div>
-                        <div class="feature-card" onclick="highlightFeature(this, 'offline')">
-                            <div class="feature-title">Offline-First Architecture</div>
-                            <div class="feature-desc">Queue-based sync, conflict resolution, and background tasks</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h3>💻 Code Examples</h3>
-                    <div id="codeExample">
-                        <div class="code-example">
-// Navigation Type Safety
-type RootStackParamList = {
-  Dashboard: undefined;
-  Profile: { userId?: string };
-  WorkoutDetail: { workoutId: string };
-};
-
-const Stack = createNativeStackNavigator&lt;RootStackParamList&gt;();
-
-// Performance Optimized List
-const WorkoutHistory = memo(() =&gt; {
-  const renderItem = useCallback(({ item }) =&gt; (
-    &lt;WorkoutItem workout={item} /&gt;
-  ), []);
-
-  return (
-    &lt;FlatList
-      data={workouts}
-      renderItem={renderItem}
-      getItemLayout={getItemLayout}
-      removeClippedSubviews
-      maxToRenderPerBatch={10}
-    /&gt;
-  );
-});
-                        </div>
-                    </div>
-                    
-                    <div class="section">
-                        <h3>📱 Sync Status Simulation</h3>
-                        <button class="btn" onclick="simulateSync('online')" style="margin: 5px;">Online</button>
-                        <button class="btn" onclick="simulateSync('syncing')" style="margin: 5px;">Syncing</button>
-                        <button class="btn" onclick="simulateSync('offline')" style="margin: 5px;">Offline</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="tech-stack">
-            <h3 style="text-align: center; margin-bottom: 2rem; color: #667eea;">🔧 Required Technology Stack</h3>
-            <div class="tech-grid">
-                <div class="tech-item">
-                    <strong>React Native CLI</strong><br>
-                    <small>v0.72+ with TypeScript</small>
-                </div>
-                <div class="tech-item">
-                    <strong>Redux Toolkit</strong><br>
-                    <small>RTK Query for API layer</small>
-                </div>
-                <div class="tech-item">
-                    <strong>React Navigation</strong><br>
-                    <small>v6 with deep linking</small>
-                </div>
-                <div class="tech-item">
-                    <strong>AsyncStorage</strong><br>
-                    <small>Encrypted local storage</small>
-                </div>
-                <div class="tech-item">
-                    <strong>Reanimated 3</strong><br>
-                    <small>60fps animations (optional)</small>
-                </div>
-                <div class="tech-item">
-                    <strong>Biometric Auth</strong><br>
-                    <small>TouchID/FaceID integration</small>
-                </div>
-            </div>
-        </div>
+    <div class="sync-status" id="syncStatus">
+        <div class="loading-spinner"></div>
+        Syncing data...
     </div>
 
     <script>
-        // Tab switching functionality
-        function switchTab(tabId, element) {
-            // Remove active class from all screens and nav items
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
+        let isOnline = true;
+        let sessionTimer = 0;
+        let sessionInterval;
+        let exerciseCount = 2;
+        let setCount = 6;
+
+        // Initialize history list
+        function generateHistory() {
+            const historyList = document.getElementById('historyList');
+            const workoutTypes = ['Push Day', 'Pull Day', 'Leg Day', 'Cardio', 'Full Body'];
             
-            // Add active class to selected screen and nav item
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
+            for (let i = 0; i < 20; i++) {
+                const workoutType = workoutTypes[Math.floor(Math.random() * workoutTypes.length)];
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                
+                const card = document.createElement('div');
+                card.className = 'workout-card';
+                card.innerHTML = `
+                    <div class="workout-header">
+                        <div class="workout-title">${workoutType}</div>
+                        <div class="workout-status ${i < 3 ? 'status-pending' : 'status-synced'}">
+                            ${i < 3 ? 'Pending' : 'Synced'}
+                        </div>
+                    </div>
+                    <div style="font-size: 14px; color: #6c757d; margin-bottom: 8px;">
+                        ${date.toLocaleDateString()}
+                    </div>
+                    <div class="workout-stats">
+                        <div class="stat">
+                            <div class="stat-value">${30 + Math.floor(Math.random() * 40)}</div>
+                            <div class="stat-label">Minutes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${4 + Math.floor(Math.random() * 8)}</div>
+                            <div class="stat-label">Exercises</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${1.2 + Math.random() * 1.5}k</div>
+                            <div class="stat-label">Calories</div>
+                        </div>
+                    </div>
+                `;
+                historyList.appendChild(card);
+            }
         }
 
-        // Feature highlighting
-        function highlightFeature(element, feature) {
-            // Remove active class from all feature cards
-            document.querySelectorAll('.feature-card').forEach(card => {
-                card.classList.remove('active');
-            });
+        // Network toggle functionality
+        document.getElementById('networkToggle').addEventListener('click', function() {
+            isOnline = !isOnline;
+            this.classList.toggle('active');
+            document.getElementById('networkStatus').textContent = isOnline ? 'Online' : 'Offline';
+            document.getElementById('offlineIndicator').classList.toggle('show', !isOnline);
             
-            // Add active class to clicked card
-            element.classList.add('active');
-            
-            // Update code example based on feature
-            const codeExamples = {
-                navigation: `// Navigation Type Safety
-type RootStackParamList = {
-  Dashboard: undefined;
-  Profile: { userId?: string };
-  WorkoutDetail: { workoutId: string };
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-// Deep Linking Configuration
-const linking = {
-  prefixes: ['fitnessapp://'],
-  config: {
-    screens: {
-      Profile: 'profile/:userId',
-      WorkoutDetail: 'workout/:workoutId',
-    },
-  },
-};`,
-                state: `// Redux Store Architecture
-interface RootState {
-  user: {
-    profile: UserProfile;
-    preferences: UserPreferences;
-    syncStatus: SyncState;
-  };
-  workouts: {
-    history: WorkoutRecord[];
-    currentSession: WorkoutSession | null;
-    syncQueue: PendingSync[];
-  };
-}
-
-// RTK Query API
-const fitnessApi = createApi({
-  reducerPath: 'fitnessApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '/api/',
-  }),
-  endpoints: (builder) => ({
-    getWorkouts: builder.query<Workout[], void>({
-      query: () => 'workouts',
-    }),
-  }),
-});`,
-                performance: `// Performance Optimized List
-const WorkoutHistory = memo(() => {
-  const renderItem = useCallback(({ item }) => (
-    <WorkoutItem workout={item} />
-  ), []);
-
-  const getItemLayout = useCallback((data, index) => ({
-    length: ITEM_HEIGHT,
-    offset: ITEM_HEIGHT * index,
-    index,
-  }), []);
-
-  return (
-    <FlatList
-      data={workouts}
-      renderItem={renderItem}
-      getItemLayout={getItemLayout}
-      removeClippedSubviews
-      maxToRenderPerBatch={10}
-      windowSize={10}
-    />
-  );
-});`,
-                offline: `// Offline Queue Management
-interface SyncQueue {
-  pendingActions: PendingAction[];
-  retryStrategies: RetryConfig[];
-  conflictResolution: ConflictResolver;
-}
-
-// Background Sync
-const syncMiddleware: Middleware = (store) => (next) => (action) => {
-  if (isOffline() && shouldQueue(action)) {
-    queueAction(action);
-    return;
-  }
-  
-  return next(action);
-};
-
-// Optimistic Updates with Rollback
-const updateProfile = createAsyncThunk(
-  'user/updateProfile',
-  async (profileData, { rejectWithValue }) => {
-    try {
-      const response = await api.updateProfile(profileData);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);`
-            };
-            
-            document.getElementById('codeExample').innerHTML = 
-                `<div class="code-example">${codeExamples[feature]}</div>`;
-        }
-
-        // Toggle settings
-        function toggleSetting(element) {
-            element.classList.toggle('active');
-        }
-
-        // Sync status simulation
-        function simulateSync(status) {
-            const indicator = document.getElementById('syncIndicator');
-            indicator.className = `sync-indicator ${status}`;
-        }
-
-        // Initialize with online status
-        document.addEventListener('DOMContentLoaded', () => {
-            simulateSync('online');
+            if (isOnline) {
+                setTimeout(() => {
+                    syncData();
+                }, 1000);
+            }
         });
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function startWorkout() {
+            if (!sessionInterval) {
+                sessionTimer = 0;
+                sessionInterval = setInterval(() => {
+                    sessionTimer++;
+                    const minutes = Math.floor(sessionTimer / 60);
+                    const seconds = sessionTimer % 60;
+                    document.getElementById('sessionTime').textContent = 
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+                
+                showSyncStatus('Workout started - tracking offline', 'success');
+                switchTab('session');
+                document.querySelector('[onclick="switchTab(\'session\')"]').click();
+            }
+        }
+
+        function addSet() {
+            setCount++;
+            document.getElementById('setCount').textContent = setCount;
+            showSyncStatus('Set added - saved locally', 'info');
+        }
+
+        function finishWorkout() {
+            if (sessionInterval) {
+                clearInterval(sessionInterval);
+                sessionInterval = null;
+                showSyncStatus('Workout saved locally - will sync when online', 'success');
+                
+                // Reset counters
+                exerciseCount = 2;
+                setCount = 6;
+                document.getElementById('exerciseCount').textContent = exerciseCount;
+                document.getElementById('setCount').textContent = setCount;
+                document.getElementById('sessionTime').textContent = '00:00';
+            }
+        }
+
+        function syncData() {
+            if (!isOnline) {
+                showSyncStatus('Cannot sync - device offline', 'error');
+                return;
+            }
+            
+            showSyncStatus('Syncing workout data...', 'loading');
+            
+            setTimeout(() => {
+                // Update pending status indicators
+                document.querySelectorAll('.status-pending').forEach(status => {
+                    status.textContent = 'Synced';
+                    status.className = 'workout-status status-synced';
+                });
+                
+                showSyncStatus('Sync completed successfully', 'success');
+            }, 2000);
+        }
+
+        function showSyncStatus(message, type) {
+            const syncStatus = document.getElementById('syncStatus');
+            const spinner = syncStatus.querySelector('.loading-spinner');
+            
+            syncStatus.innerHTML = message;
+            
+            if (type === 'loading') {
+                syncStatus.innerHTML = '<div class="loading-spinner"></div>' + message;
+                syncStatus.style.background = '#4facfe';
+            } else if (type === 'success') {
+                syncStatus.style.background = '#28a745';
+            } else if (type === 'error') {
+                syncStatus.style.background = '#dc3545';
+            } else {
+                syncStatus.style.background = '#ffc107';
+            }
+            
+            syncStatus.classList.add('show');
+            
+            setTimeout(() => {
+                syncStatus.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize the demo
+        generateHistory();
+        
+        // Show initial sync status
+        setTimeout(() => {
+            showSyncStatus('App loaded - Redux store rehydrated', 'success');
+        }, 1000);
+
+        // Update session stats
+        document.getElementById('exerciseCount').textContent = exerciseCount;
+        document.getElementById('setCount').textContent = setCount;
     </script>
 </body>
 </html>
