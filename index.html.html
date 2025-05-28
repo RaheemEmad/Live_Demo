@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Native Assessment - Fitness App Demo | bolder.fit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .company-info {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .intro-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-section p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .demo-container {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .phone-mockup {
+            flex: 0 0 350px;
+            background: #000;
+            border-radius: 25px;
+            padding: 8px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .phone-screen {
+            background: #fff;
+            border-radius: 18px;
+            height: 700px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-bar {
+            background: #000;
+            color: #fff;
+            padding: 8px 20px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            border-radius: 18px 18px 0 0;
+        }
+
+        .app-content {
+            height: calc(100% - 100px);
+            position: relative;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 60px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #f8f9fa;
+            display: flex;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6c757d;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .nav-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .controls-panel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .feature-card.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .code-example {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .dashboard-content {
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .profile-form {
+            padding: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+        }
+
+        .workout-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .workout-item {
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .workout-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .workout-meta {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .settings-list {
+            padding: 20px 0;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .toggle {
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .toggle.active {
+            background: #667eea;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s ease;
+        }
+
+        .toggle.active::after {
+            transform: translateX(26px);
+        }
+
+        .tech-stack {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .sync-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #28a745;
+            animation: pulse 2s infinite;
+        }
+
+        .sync-indicator.syncing {
+            background: #ffc107;
+        }
+
+        .sync-indicator.offline {
+            background: #dc3545;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .demo-container {
+                flex-direction: column;
+            }
+            
+            .phone-mockup {
+                flex: none;
+                max-width: 100%;
+                position: relative;
+                top: auto;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🏋️ FitnessApp Assessment</div>
+            <div class="company-info">
+                <strong>bolder.fit</strong> | React Native Mid/Senior Developer Assessment
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h1>Interactive React Native Assessment Demo</h1>
+            <p>Explore the fitness app structure and features that candidates should implement. This demonstration showcases the expected user experience, technical architecture, and advanced React Native patterns.</p>
+        </div>
+
+        <div class="demo-container">
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span>🔋 100%</span>
+                    </div>
+                    <div class="sync-indicator" id="syncIndicator"></div>
+                    
+                    <div class="app-content">
+                        <!-- Dashboard Screen -->
+                        <div class="screen active" id="dashboard">
+                            <div class="dashboard-content">
+                                <h2>Welcome Back!</h2>
+                                <p style="color: #666; margin: 10px 0;">Ready for your workout?</p>
+                                
+                                <div class="stats-grid">
+                                    <div class="stat-card">
+                                        <div class="stat-number">12</div>
+                                        <div class="stat-label">Workouts This Month</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-number">2.5h</div>
+                                        <div class="stat-label">Average Duration</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-number">85%</div>
+                                        <div class="stat-label">Goal Achievement</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-number">1,240</div>
+                                        <div class="stat-label">Calories Burned</div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn" style="width: 100%; margin-top: 20px;">Start New Workout</button>
+                            </div>
+                        </div>
+
+                        <!-- Profile Screen -->
+                        <div class="screen" id="profile">
+                            <h2>Profile Settings</h2>
+                            <div class="profile-form">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-input" value="Alex Johnson" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Age</label>
+                                    <input type="number" class="form-input" value="28" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Weight (kg)</label>
+                                    <input type="number" class="form-input" value="75" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Fitness Goal</label>
+                                    <select class="form-input">
+                                        <option>Weight Loss</option>
+                                        <option>Muscle Gain</option>
+                                        <option>Endurance</option>
+                                        <option>General Fitness</option>
+                                    </select>
+                                </div>
+                                <button class="btn">Save Changes</button>
+                            </div>
+                        </div>
+
+                        <!-- History Screen -->
+                        <div class="screen" id="history">
+                            <h2>Workout History</h2>
+                            <div class="workout-list">
+                                <div class="workout-item">
+                                    <div class="workout-title">Upper Body Strength</div>
+                                    <div class="workout-meta">45 mins • 320 calories • 2 hours ago</div>
+                                </div>
+                                <div class="workout-item">
+                                    <div class="workout-title">Cardio HIIT</div>
+                                    <div class="workout-meta">30 mins • 280 calories • Yesterday</div>
+                                </div>
+                                <div class="workout-item">
+                                    <div class="workout-title">Lower Body Focus</div>
+                                    <div class="workout-meta">50 mins • 380 calories • 2 days ago</div>
+                                </div>
+                                <div class="workout-item">
+                                    <div class="workout-title">Full Body Circuit</div>
+                                    <div class="workout-meta">35 mins • 290 calories • 3 days ago</div>
+                                </div>
+                                <div class="workout-item">
+                                    <div class="workout-title">Yoga Flow</div>
+                                    <div class="workout-meta">60 mins • 180 calories • 4 days ago</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings Screen -->
+                        <div class="screen" id="settings">
+                            <h2>Settings</h2>
+                            <div class="settings-list">
+                                <div class="setting-item">
+                                    <span>Push Notifications</span>
+                                    <div class="toggle active" onclick="toggleSetting(this)"></div>
+                                </div>
+                                <div class="setting-item">
+                                    <span>Biometric Login</span>
+                                    <div class="toggle active" onclick="toggleSetting(this)"></div>
+                                </div>
+                                <div class="setting-item">
+                                    <span>Offline Mode</span>
+                                    <div class="toggle active" onclick="toggleSetting(this)"></div>
+                                </div>
+                                <div class="setting-item">
+                                    <span>Data Sync</span>
+                                    <div class="toggle" onclick="toggleSetting(this)"></div>
+                                </div>
+                                <div class="setting-item">
+                                    <span>Dark Mode</span>
+                                    <div class="toggle" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-nav">
+                        <div class="nav-item active" onclick="switchTab('dashboard', this)">
+                            <div class="nav-icon">📊</div>
+                            <div class="nav-label">Dashboard</div>
+                        </div>
+                        <div class="nav-item" onclick="switchTab('profile', this)">
+                            <div class="nav-icon">👤</div>
+                            <div class="nav-label">Profile</div>
+                        </div>
+                        <div class="nav-item" onclick="switchTab('history', this)">
+                            <div class="nav-icon">📋</div>
+                            <div class="nav-label">History</div>
+                        </div>
+                        <div class="nav-item" onclick="switchTab('settings', this)">
+                            <div class="nav-icon">⚙️</div>
+                            <div class="nav-label">Settings</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="section">
+                    <h3>🎯 Key Features to Implement</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card active" onclick="highlightFeature(this, 'navigation')">
+                            <div class="feature-title">Navigation Architecture</div>
+                            <div class="feature-desc">React Navigation v6 with TypeScript, deep linking, and custom URL schemes</div>
+                        </div>
+                        <div class="feature-card" onclick="highlightFeature(this, 'state')">
+                            <div class="feature-title">State Management</div>
+                            <div class="feature-desc">Redux Toolkit with RTK Query, optimistic updates, and offline sync</div>
+                        </div>
+                        <div class="feature-card" onclick="highlightFeature(this, 'performance')">
+                            <div class="feature-title">Performance Optimization</div>
+                            <div class="feature-desc">FlatList virtualization, memo patterns, and 60fps animations</div>
+                        </div>
+                        <div class="feature-card" onclick="highlightFeature(this, 'offline')">
+                            <div class="feature-title">Offline-First Architecture</div>
+                            <div class="feature-desc">Queue-based sync, conflict resolution, and background tasks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>💻 Code Examples</h3>
+                    <div id="codeExample">
+                        <div class="code-example">
+// Navigation Type Safety
+type RootStackParamList = {
+  Dashboard: undefined;
+  Profile: { userId?: string };
+  WorkoutDetail: { workoutId: string };
+};
+
+const Stack = createNativeStackNavigator&lt;RootStackParamList&gt;();
+
+// Performance Optimized List
+const WorkoutHistory = memo(() =&gt; {
+  const renderItem = useCallback(({ item }) =&gt; (
+    &lt;WorkoutItem workout={item} /&gt;
+  ), []);
+
+  return (
+    &lt;FlatList
+      data={workouts}
+      renderItem={renderItem}
+      getItemLayout={getItemLayout}
+      removeClippedSubviews
+      maxToRenderPerBatch={10}
+    /&gt;
+  );
+});
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <h3>📱 Sync Status Simulation</h3>
+                        <button class="btn" onclick="simulateSync('online')" style="margin: 5px;">Online</button>
+                        <button class="btn" onclick="simulateSync('syncing')" style="margin: 5px;">Syncing</button>
+                        <button class="btn" onclick="simulateSync('offline')" style="margin: 5px;">Offline</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h3 style="text-align: center; margin-bottom: 2rem; color: #667eea;">🔧 Required Technology Stack</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <strong>React Native CLI</strong><br>
+                    <small>v0.72+ with TypeScript</small>
+                </div>
+                <div class="tech-item">
+                    <strong>Redux Toolkit</strong><br>
+                    <small>RTK Query for API layer</small>
+                </div>
+                <div class="tech-item">
+                    <strong>React Navigation</strong><br>
+                    <small>v6 with deep linking</small>
+                </div>
+                <div class="tech-item">
+                    <strong>AsyncStorage</strong><br>
+                    <small>Encrypted local storage</small>
+                </div>
+                <div class="tech-item">
+                    <strong>Reanimated 3</strong><br>
+                    <small>60fps animations (optional)</small>
+                </div>
+                <div class="tech-item">
+                    <strong>Biometric Auth</strong><br>
+                    <small>TouchID/FaceID integration</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabId, element) {
+            // Remove active class from all screens and nav items
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to selected screen and nav item
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // Feature highlighting
+        function highlightFeature(element, feature) {
+            // Remove active class from all feature cards
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to clicked card
+            element.classList.add('active');
+            
+            // Update code example based on feature
+            const codeExamples = {
+                navigation: `// Navigation Type Safety
+type RootStackParamList = {
+  Dashboard: undefined;
+  Profile: { userId?: string };
+  WorkoutDetail: { workoutId: string };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// Deep Linking Configuration
+const linking = {
+  prefixes: ['fitnessapp://'],
+  config: {
+    screens: {
+      Profile: 'profile/:userId',
+      WorkoutDetail: 'workout/:workoutId',
+    },
+  },
+};`,
+                state: `// Redux Store Architecture
+interface RootState {
+  user: {
+    profile: UserProfile;
+    preferences: UserPreferences;
+    syncStatus: SyncState;
+  };
+  workouts: {
+    history: WorkoutRecord[];
+    currentSession: WorkoutSession | null;
+    syncQueue: PendingSync[];
+  };
+}
+
+// RTK Query API
+const fitnessApi = createApi({
+  reducerPath: 'fitnessApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/api/',
+  }),
+  endpoints: (builder) => ({
+    getWorkouts: builder.query<Workout[], void>({
+      query: () => 'workouts',
+    }),
+  }),
+});`,
+                performance: `// Performance Optimized List
+const WorkoutHistory = memo(() => {
+  const renderItem = useCallback(({ item }) => (
+    <WorkoutItem workout={item} />
+  ), []);
+
+  const getItemLayout = useCallback((data, index) => ({
+    length: ITEM_HEIGHT,
+    offset: ITEM_HEIGHT * index,
+    index,
+  }), []);
+
+  return (
+    <FlatList
+      data={workouts}
+      renderItem={renderItem}
+      getItemLayout={getItemLayout}
+      removeClippedSubviews
+      maxToRenderPerBatch={10}
+      windowSize={10}
+    />
+  );
+});`,
+                offline: `// Offline Queue Management
+interface SyncQueue {
+  pendingActions: PendingAction[];
+  retryStrategies: RetryConfig[];
+  conflictResolution: ConflictResolver;
+}
+
+// Background Sync
+const syncMiddleware: Middleware = (store) => (next) => (action) => {
+  if (isOffline() && shouldQueue(action)) {
+    queueAction(action);
+    return;
+  }
+  
+  return next(action);
+};
+
+// Optimistic Updates with Rollback
+const updateProfile = createAsyncThunk(
+  'user/updateProfile',
+  async (profileData, { rejectWithValue }) => {
+    try {
+      const response = await api.updateProfile(profileData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);`
+            };
+            
+            document.getElementById('codeExample').innerHTML = 
+                `<div class="code-example">${codeExamples[feature]}</div>`;
+        }
+
+        // Toggle settings
+        function toggleSetting(element) {
+            element.classList.toggle('active');
+        }
+
+        // Sync status simulation
+        function simulateSync(status) {
+            const indicator = document.getElementById('syncIndicator');
+            indicator.className = `sync-indicator ${status}`;
+        }
+
+        // Initialize with online status
+        document.addEventListener('DOMContentLoaded', () => {
+            simulateSync('online');
+        });
+    </script>
+</body>
+</html>
